@@ -1,6 +1,6 @@
 sensor:
   - platform: dht
-    pin: 14
+    pin: <SPECIFY_YOUR_PIN>
     temperature:      
         name: "Hotdog Box Temperature"
         id: "temp1"
@@ -39,14 +39,14 @@ font:
     id: font3
     size: 16
 i2c:
-  sda: 5
-  scl: 4
+  sda: <SPECIFY_YOUR_PIN>
+  scl: <SPECIFY_YOUR_PIN>
   scan: false
 
 display:
   - platform: ssd1306_i2c
     model: "SSD1306 128x64"
-    reset_pin: 0
+    reset_pin: <SPECIFY_any_unused_PIN>
     address: 0x3C
     lambda: |-
 
