@@ -3,7 +3,7 @@ For Home assistant + espHome
 * Use a dev board not a mini for best results
 * STL made to fit nodemcu v3 esp8266
 
-pin numbers listed in config (gpio numbers not numbers printed on board)
+<SPECIFY_YOUR_PIN> numbers in config (gpio numbers not numbers printed on board)
 
 Parts:
 
