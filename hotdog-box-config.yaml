@@ -9,7 +9,7 @@ sensor:
       id: "humid1"
     update_interval: 10s
   - platform: template
-    id: temp2
+    id: "temp2"
     lambda: return id(temp1).state * 1.8+32;
     update_interval: 10s
     internal: true
