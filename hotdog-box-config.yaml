@@ -87,10 +87,8 @@ display:
       // print motion icon BASED ON PIR STATE
       if (id(pir1).state) {
         it.image(80, 23, id(pir_on));
-
       } else {
         it.image(80, 23, id(pir_off));
-        
       }
 
       // Print label BASED ON PIR STATE
