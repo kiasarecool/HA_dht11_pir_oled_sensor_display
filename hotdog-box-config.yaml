@@ -35,9 +35,6 @@ switch:
       - lambda: id(oled).turn_on();
     turn_off_action:
       - lambda: id(oled).turn_off();
-
-
-
 time:
   - platform: homeassistant
     id: esptime
@@ -45,21 +42,17 @@ font:
   - file: 'fonts/arial.ttf'
     id: font1
     size: 11
-
   - file: 'BebasNeue-Regular.ttf'
     id: font2
     size: 36
-
   - file: 'fonts/arial.ttf'
     id: font3
     size: 16
-
 image: 
   - file: "icons/motion-sensor-off.png"
     id: pir_off
   - file: "icons/motion-sensor.png"
     id: pir_on
-
 i2c:
   sda: 14
   scl: 27
@@ -72,7 +65,6 @@ display:
     address: 0x3C
     rotation: 0
     lambda: |-
-
       it.strftime(85, 0, id(font3), "%H:%M", id(esptime).now());
       // Print label
       if (id(humid1).has_state()) {
@@ -90,7 +82,6 @@ display:
       } else {
         it.image(80, 23, id(pir_off));
       }
-
       // Print label BASED ON PIR STATE
       if (id(pir1).state) {
       it.printf(75, 50, id(font1), "DETECTED");
