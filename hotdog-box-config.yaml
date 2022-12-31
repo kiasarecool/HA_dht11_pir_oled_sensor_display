@@ -1,25 +1,40 @@
-sensor:
-  - platform: dht
-    pin: <SPECIFY_YOUR_PIN>
-    temperature:      
-        name: "Hotdog Box Temperature"
-        id: "temp1"
-    humidity:
-      name: "Hotdog Box Humidity"
-      id: "humid1"
-    update_interval: 10s
-  - platform: template
-    id: "temp2"
-    lambda: return id(temp1).state * 1.8+32;
-    update_interval: 10s
-    internal: true
+substitutions:
+  esp_name: "
+  
+  
+ ####
+ <esphome default things>
+ ####
 binary_sensor:
   - platform: gpio
-    pin: 12
-    name: "Hotdog Box Motion"
+    pin: 33
+    name: "${esp_name} Motion"
     id: "pir1"
     device_class: motion
-
+sensor:
+  - platform: dht
+    pin: 13
+    temperature:      
+        name: "${esp_name} Temperature"
+        id: "temp1"
+    humidity:
+      name: "${esp_name} Humidity"
+      id: "humid1"
+    update_interval: 5s
+  - platform: template
+    name: esp oled Temperature F
+    id: temp2
+    lambda: return id(temp1).state * 1.8+32;
+    update_interval: 5s
+    internal: true
+switch:
+  - platform: template
+    name: "${esp_name} OLED"
+    optimistic: true
+    turn_on_action:
+      - lambda: id(oled).turn_on();
+    turn_off_action:
+      - lambda: id(oled).turn_off();
 
 
 
@@ -27,7 +42,7 @@ time:
   - platform: homeassistant
     id: esptime
 font:
-  - file: 'arial.ttf'
+  - file: 'fonts/arial.ttf'
     id: font1
     size: 11
 
@@ -35,35 +50,52 @@ font:
     id: font2
     size: 36
 
-  - file: 'arial.ttf'
+  - file: 'fonts/arial.ttf'
     id: font3
     size: 16
-i2c:
-  sda: <SPECIFY_YOUR_PIN>
-  scl: <SPECIFY_YOUR_PIN>
-  scan: false
 
+image: 
+  - file: "icons/motion-sensor-off.png"
+    id: pir_off
+  - file: "icons/motion-sensor.png"
+    id: pir_on
+
+i2c:
+  sda: 14
+  scl: 27
+  scan: false
 display:
   - platform: ssd1306_i2c
     model: "SSD1306 128x64"
-    reset_pin: <SPECIFY_any_unused_PIN>
+    id: oled
+    reset_pin: 0
     address: 0x3C
+    rotation: 0
     lambda: |-
 
       it.strftime(85, 0, id(font3), "%H:%M", id(esptime).now());
-      if (id(pir1).state) {
-      it.printf(0, 0, id(font1), "ALERT");
-      } else {
-      it.printf(0, 0, id(font1), "CLEAR");
+      // Print label
+      if (id(humid1).has_state()) {
+      it.printf(0, 0, id(font1), "%.0f%% Humidity", id(humid1).state);
       }
+      // PRINT TEMP
       if (id(temp1).has_state()) {
       it.printf(0, 50, id(font2), TextAlign::BASELINE_LEFT, "%.1f°", id(temp2).state);
       }
       // Print label
       it.printf(0, 50, id(font1), "Tempature");
-    
-      if (id(humid1).has_state()) {
-        it.printf(127, 50, id(font2), TextAlign::BASELINE_RIGHT , "%.0f%%", id(humid1).state);
+      // print motion icon BASED ON PIR STATE
+      if (id(pir1).state) {
+        it.image(80, 23, id(pir_on));
+
+      } else {
+        it.image(80, 23, id(pir_off));
+        
       }
-      // Print label
-      it.printf(83, 50, id(font1), "Humidity");
+
+      // Print label BASED ON PIR STATE
+      if (id(pir1).state) {
+      it.printf(75, 50, id(font1), "DETECTED");
+      } else {
+      it.printf(75, 50, id(font1), "CLEAR");
+      }
