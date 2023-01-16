@@ -1,5 +1,7 @@
 For Home assistant + espHome 
 
+![image](https://github.com/kiasarecool/HA_dht11_pir_oled_sensor_display/blob/0083ac735942dae6269b9b4e116b7aedf72e7cb9/pictures/F08B5A3C-04F3-40BF-981D-D7A6833B002D.jpeg)
+
 * Use a dev board not a mini for best results
 * STL made to fit nodemcu v3 esp8266
 
